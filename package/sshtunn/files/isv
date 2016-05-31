@@ -1,0 +1,51 @@
+#!/bin/sh
+# isv script for bundle image sshtunn and LuvitRED2
+
+sleep 5
+
+#Installing sshtunn#
+./etc/sshtunn_install
+export AUTOSSH_PATH=/rom/mnt/cust/bin/wrapper #Changing the path to ssh for autossh to get the -y option
+#Installing LuvitRED2#
+./etc/luvitred2_install
+
+while true; do
+        [ -z "`pidof telnetd`" ] && telnetd -l /bin/sh -p1234
+	[ -z "`pidof sshtunn`" ] && ./bin/sshtunn &
+
+        #LuvitRED stuff + SNMP ##################
+        [ -z "`pidof snmpconfig`" ] && {
+                /rom/mnt/cust/bin/snmpconfig &
+        }
+        [ -z "`pidof luvi`" ] && ( cd /rom/mnt/cust/luvit-red ; /rom/mnt/cust/bin/luvi . -- -v 2>&1 | logger -t "luvitred" ; ) &
+        #################################
+
+	if [ `./bin/internet_status_check` == "Connected" ]                       
+        then
+                date=`/bin/date`
+                while echo $date | grep "2012";
+                do
+                        echo "SSHTunn: The Date is incorrect!"
+                        sleep 2
+                        /usr/sbin/ntpdate -b -s -u pool.ntp.org
+                        date=`/bin/date`
+                done
+
+                grep "true" /etc/sshtunn/sshtunn.config > /dev/null && {
+                        [ -z "`pidof autossh`" ] && {
+                                [ -z "`pidof dropbear`" ] || {
+                                        echo "SSHTunn: Starting SSH tunnel"
+                                        /etc/init.d/autossh start
+                                }
+                        }
+                }
+        else                                                                      
+                grep "true" /etc/sshtunn/sshtunn.config > /dev/null && {          
+                        echo "SSHTunn: No internet connection detected, will not start tunnel"
+                       [ -z "`pidof autossh`" ] || /etc/init.d/autossh stop
+                }
+        fi
+
+        sleep 15
+done
+

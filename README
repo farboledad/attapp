@@ -1,0 +1,33 @@
+From SDK_ROOT/package/
+----------------------
+
+rm -rf dallas-sdk/
+ln -s ../../attapp/red2_packages/libuv .
+ln -s ../../attapp/red2_packages/libarchive .
+ln -s ../../attapp/red2_packages/dallas-sdk .
+ln -s ../../attapp/red2_packages/luvit-red .
+ln -s ../../attapp/red2_packages/luajit .
+ln -s ../../attapp/red2_packages/luvit-startup .
+ln -s ../../attapp/red2_packages/qpid-proton .
+ln -s ../../attapp/red2_packages/luv .
+ln -s ../../attapp/red2_packages/leveldb .
+ln -s ../../attapp/red2_packages/libtelnet .
+ln -s ../../attapp/red2_packages/luvi .
+ln -s ../../attapp/red2_packages/expat .
+ln -s ../../attapp/red2_packages/net-snmp .
+ln -s ../../attapp/red2_packages/snmpconfig .
+ln -s ../../attapp/red2_packages/argp-standalone .
+ln -s ../../attapp/red2_packages/eibd .
+ln -s ../../attapp/red2_packages/pthsem .
+
+From SDK_ROOT
+-------------
+cp -v ../attapp/sdk_config/* config/config/
+
+From SDK_ROOT/package
+---------------------
+
+ln -s ../../attapp/package/autossh .
+ln -s ../../attapp/package/jansson .
+ln -s ../../attapp/package/root_enabler .
+ln -s ../../attapp/package/sshtunn .
