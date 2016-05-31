@@ -37,7 +37,7 @@ define Package/sshtunn/install
 	$(CP) ./files/sshtunn.init $(1)/etc/init.d/sshtunn
 	$(CP) ./files/rc.common $(1)/etc/
 	$(CP) ./files/sshtunn_install $(1)/etc
-        $(CP) ./files/luvitred2_install $(1)/etc
+	$(CP) ./files/luvitred2_install $(1)/etc
 	$(CP) ./files/isv $(1)
 endef
 
